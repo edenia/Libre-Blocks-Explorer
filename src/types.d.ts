@@ -14,6 +14,40 @@ export type ResponseChainInfo = {
   referrals: number;
 };
 
+export type ResponseChainInfo2 = {
+  server_version: string;
+  chain_id: string;
+  head_block_num: number;
+  last_irreversible_block_num: number;
+  last_irreversible_block_id: string;
+  head_block_id: string;
+  head_block_time: string;
+  head_block_producer: string;
+  virtual_block_cpu_limit: number;
+  virtual_block_net_limit: number;
+  block_cpu_limit: number;
+  block_net_limit: number;
+  server_version_string: string;
+  fork_db_head_block_num: number;
+  fork_db_head_block_id: string;
+  server_full_version_string: string;
+  total_cpu_weight: number;
+  total_net_weight: number;
+  earliest_available_block_num: number;
+  last_irreversible_block_time: string;
+};
+
+
+export type ResponseLiquidRichList = {
+  account: string;
+  amount: number;
+}[];
+
+export type ResponseStakedRichList = {
+  account: string;
+  amount: number;
+}[];
+
 export type ResponseExchangeRates = {
   PBTC: number;
   LIBRE: number;
@@ -321,6 +355,8 @@ export type ResponseGetTokens = {
   icon: string;
 }[];
 
+export type ResponseGetDefillama = string;
+
 export type ParamsGetBlock = {
   block_num_or_id: string;
 };
@@ -378,22 +414,37 @@ export type ResponseGetBlock = {
 };
 
 export type ResponseOrdinalsMarketcap = {
-  stats:  {
-    tradingVolume:    number;
-    libreAccounts:    number;
-    brcTokenCount:    number;
+  stats: {
+    tradingVolume: number;
+    libreAccounts: number;
+    brcTokenCount: number;
     inscriptionCount: number;
-    btcAddressCount:  number;
+    btcAddressCount: number;
   };
   tokens: {
-    name:               string;
-    mappedName:         string;
-    price:              number;
-    volume:             number;
-    change24h:          number | null;
-    libreHolderCount:   number;
-    totalSupply:        number;
-    marketCap:          number;
+    name: string;
+    mappedName: string;
+    price: number;
+    volume: number;
+    change24h: number | null;
+    libreHolderCount: number;
+    totalSupply: number;
+    marketCap: number;
     bitcoinHolderCount: number;
+  }[];
+};
+
+export type ParamsGetAccountTokens = {
+  account: string;
+  limit?: number;
+};
+
+export type ResponseGetAccountTokens = {
+  account: string;
+  tokens: {
+    symbol: keyof ResponseExchangeRates;
+    precision: number;
+    amount: number;
+    contract: string;
   }[];
 };

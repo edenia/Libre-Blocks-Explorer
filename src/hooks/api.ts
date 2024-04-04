@@ -16,15 +16,35 @@ import type {
   ResponseGetTokens,
   ResponseGetBlock,
   ResponseOrdinalsMarketcap,
+  ResponseGetDefillama,
+  ResponseChainInfo2,
+  ResponseLiquidRichList,
+  ResponseStakedRichList,
+  ParamsGetAccountTokens,
+  ResponseGetAccountTokens,
 } from '@/types';
 import * as api from '@/lib/api';
 
 export const useCoinInfo = () => {
-  return useQuery<ResponseCoinInfo, Error>({ queryKey: ['coinInfo'], queryFn: api.getCoinInfo });
+  return useQuery<ResponseCoinInfo, Error>({
+    queryKey: ['coinInfo'],
+    queryFn: api.getCoinInfo,
+  });
+};
+
+export const useChainInfo2 = () => {
+  return useQuery<ResponseChainInfo2, Error>({
+    queryKey: ['head_block_num'],
+    queryFn: api.getChainInfo2,
+    refetchInterval: 10 * 1000, // 10 second
+  });
 };
 
 export const useChainInfo = () => {
-  return useQuery<ResponseChainInfo, Error>({ queryKey: ['chainInfo'], queryFn: api.getChainInfo });
+  return useQuery<ResponseChainInfo, Error>({
+    queryKey: ['chainInfo'],
+    queryFn: api.getChainInfo,
+  });
 };
 
 export const useExchangeRates = () => {
@@ -35,13 +55,14 @@ export const useExchangeRates = () => {
 };
 
 /**
- * response tipi gönderilen parametrelere göre değiştiği için <T> ile dinamik olarak aldık
- * kullandığımız yerde nasıl bir response tipi beklediğimizi belirteceğiz
+ * I used <T> to dynamically determine the response type based on the parameters sent.
+ * When using it, we will specify the type of response we expect.
  *
- * Örn:
+ * Example:
  *  useLastTransactions<ResponseLastTransactions>
  *  useLastTransactions<ResponseLastSwapTransactions>
  */
+
 export const useLastTransactions = <T>(params: ParamsLastTransactions) => {
   return useQuery<T, Error>({
     queryKey: ['exchangeRates', params],
@@ -54,7 +75,7 @@ export const useAccount = (params: ParamsGetAccount) => {
   return useQuery<ResponseGetAccount, Error>({
     queryKey: ['getAccount', params],
     queryFn: api.getAccount,
-    retry: 0, // aranan hesap bulunamayınca tekrar denemeye gerek yok
+    retry: 0, // When the searched account cannot be found, there is no need to retry.
     refetchOnWindowFocus: false,
   });
 };
@@ -74,7 +95,7 @@ export const useTransaction = (params: ParamsGetTransaction) => {
   return useQuery<ResponseGetTransaction, Error>({
     queryKey: ['getTransaction', params],
     queryFn: api.getTransaction,
-    retry: 0, // aranan transaction bulunamayınca tekrar denemeye gerek yok
+    retry: 0, // When the searched tx cannot be found, there is no need to retry.
     refetchOnWindowFocus: false,
   });
 };
@@ -95,6 +116,20 @@ export const useProducers = () => {
   });
 };
 
+export const useLiquidRichList = () => {
+  return useQuery<ResponseLiquidRichList, Error>({
+    queryKey: ['liquidrichlist'],
+    queryFn: api.getLiquidRichList,
+  });
+};
+
+export const useStakedRichList = () => {
+  return useQuery<ResponseStakedRichList, Error>({
+    queryKey: ['stakedrichlist'],
+    queryFn: api.getStakedRichList,
+  });
+};
+
 export const useTokens = () => {
   return useQuery<ResponseGetTokens, Error>({
     queryKey: ['coinInfo'],
@@ -106,5 +141,19 @@ export const useOrdinalsMarketcap = () => {
   return useQuery<ResponseOrdinalsMarketcap, Error>({
     queryKey: ['ordinalsMarketcap'],
     queryFn: api.getOrdinalsMarketcap,
+  });
+};
+
+export const useDefillamaTVL = () => {
+  return useQuery<ResponseGetDefillama, Error>({
+    queryKey: ['DefiLlamaTVL'],
+    queryFn: api.getDefillamaTVL, // Defillama
+  });
+};
+
+export const useAccountTokens = (params: ParamsGetAccountTokens) => {
+  return useQuery<ResponseGetAccountTokens, Error>({
+    queryKey: ['accountTokens', params],
+    queryFn: api.getAccountTokens,
   });
 };
