@@ -28,9 +28,9 @@ jobs:
           context: .
           file: ./dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository }}/libre-blocks-explorer:latest
+          tags: ghcr.io/libre-blocks-explorer/libre-blocks-explorer:latest
           platforms: linux/amd64,linux/arm64
-          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/libre-blocks-explorer:cache
+          cache-from: type=registry,ref=ghcr.io/libre-blocks-explorer/libre-blocks-explorer:cache
           cache-to: type=inline
           build-args: |
             NEXT_PUBLIC_LIBRE_API=https://dashboard-api.libre.org
@@ -41,4 +41,4 @@ jobs:
             NEXT_PUBLIC_PROVIDER_LINK=https://libre.org/
 
       - name: Verify Built Image
-        run: docker run --rm ghcr.io/${{ github.repository }}/libre-blocks-explorer:latest
+        run: docker run --rm ghcr.io/libre-blocks-explorer/libre-blocks-explorer:latest
